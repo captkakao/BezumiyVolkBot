@@ -1,6 +1,17 @@
 {
-  "769926681": {
-    "hello": "hello mf",
-    "fuck": "go fuck yourself"
+  "chats": {
+    "-4957830380": {
+      "name": "Безумно волкилар",
+      "users": {
+        "769926681": {
+          "username": "captkakao",
+          "fullname": "Sultanbek Serik",
+          "replies": {
+            "hello": "hello mf",
+            "fuck": "go fuck yourself"
+          }
+        }
+      }
+    }
   }
 }

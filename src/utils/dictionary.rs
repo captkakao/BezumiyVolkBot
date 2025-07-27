@@ -4,17 +4,28 @@ use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
 use std::path::Path;
 
-// Type aliases for cleaner code
 type UserId = String;
-type Dictionary = HashMap<String, String>;
-type UserDictionaries = HashMap<UserId, Dictionary>;
+type ChatId = String;
+type Trigger = String;
+type Reply = String;
 
-#[derive(Debug, Serialize, Deserialize, Default, Clone)]
-pub struct DictionaryManager {
-    #[serde(flatten)]  // This will flatten the structure to match your JSON
-    dictionaries: UserDictionaries,
+#[derive(Debug, Serialize, Deserialize, Clone, Default)]
+pub struct User {
+    pub username: String,
+    pub fullname: String,
+    pub replies: HashMap<Trigger, Reply>,
 }
 
+#[derive(Debug, Serialize, Deserialize, Clone, Default)]
+pub struct Chat {
+    pub name: String,
+    pub users: HashMap<UserId, User>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, Default)]
+pub struct DictionaryManager {
+    pub chats: HashMap<ChatId, Chat>,
+}
 
 // Global instance as Option
 static DICTIONARY: Mutex<Option<DictionaryManager>> = Mutex::new(None);
@@ -27,27 +38,25 @@ impl DictionaryManager {
         fs::write("dictionaries.json", data)
     }
 
-    pub fn add_entry(&mut self, user_id: UserId, key: String, value: String) {
-        self.dictionaries
-            .entry(user_id)
-            .or_insert_with(HashMap::new)
-            .insert(key, value);
+    pub fn add_entry(&mut self, chat_id: ChatId, user_id: UserId, key: String, value: String) {
+        let chat = self.chats.entry(chat_id).or_insert_with(|| Chat {
+            name: "New Chat".to_string(),
+            users: HashMap::new(),
+        });
+
+        let user = chat.users.entry(user_id).or_insert_with(|| User {
+            username: "New User".to_string(),
+            fullname: "New User".to_string(),
+            replies: HashMap::new(),
+        });
+
+        user.replies.insert(key, value);
     }
 
-    pub fn get_response(&self, user_id: UserId, key: &str) -> Option<&String> {
-        self.dictionaries.get(&user_id)?.get(key)
-    }
-
-    pub fn remove_entry(&mut self, user_id: UserId, key: &str) -> bool {
-        if let Some(dict) = self.dictionaries.get_mut(&user_id) {
-            dict.remove(key).is_some()
-        } else {
-            false
-        }
-    }
-
-    pub fn get_all_entries(&self, user_id: UserId) -> Option<&Dictionary> {
-        self.dictionaries.get(&user_id)
+    pub fn get_response(&self, chat_id: ChatId, user_id: UserId, key: &str) -> Option<&String> {
+        let chat = self.chats.get(&chat_id)?;
+        let user = chat.users.get(&user_id)?;
+        user.replies.get(key)
     }
 }
 
@@ -87,60 +96,51 @@ pub fn initialize_dictionary() -> Result<(), std::io::Error> {
 }
 
 
-pub fn add_dictionary_entry(user_id: UserId, key: String, value: String) -> Result<(), std::io::Error> {
-    let mut lock = DICTIONARY.lock().map_err(|e| {
-        std::io::Error::new(std::io::ErrorKind::Other, e.to_string())
-    })?;
-
-    if let Some(manager) = lock.as_mut() {
-        manager.add_entry(user_id, key, value);
-        manager.save()?;
-    }
-    Ok(())
-}
-
-pub fn get_dictionary_response(user_id: UserId, key: &str) -> Option<String> {
+// pub fn add_dictionary_entry(user_id: UserId, key: String, value: String) -> Result<(), std::io::Error> {
+//     let mut lock = DICTIONARY.lock().map_err(|e| {
+//         std::io::Error::new(std::io::ErrorKind::Other, e.to_string())
+//     })?;
+// 
+//     if let Some(manager) = lock.as_mut() {
+//         manager.add_entry(user_id, key, value);
+//         manager.save()?;
+//     }
+//     Ok(())
+// }
+// 
+pub fn get_dictionary_response(chat_id: ChatId, user_id: UserId, key: &str) -> Option<String> {
     if let Ok(lock) = DICTIONARY.lock() {
-        lock.as_ref()?.get_response(user_id, key).cloned()
+        lock.as_ref()?.get_response(chat_id, user_id, key).cloned()
     } else {
         None
     }
 }
 
-
-pub fn remove_dictionary_entry(user_id: UserId, key: &str) -> Result<bool, std::io::Error> {
-    let mut lock = DICTIONARY.lock().map_err(|e| {
-        std::io::Error::new(std::io::ErrorKind::Other, e.to_string())
-    })?;
-
-    if let Some(manager) = lock.as_mut() {
-        let removed = manager.remove_entry(user_id, key);
-        if removed {
-            manager.save()?;
-        }
-        Ok(removed)
-    } else {
-        Ok(false)
-    }
-}
-
-pub fn save_dictionary() -> Result<(), std::io::Error> {
-    let lock = DICTIONARY.lock().map_err(|e| {
-        std::io::Error::new(std::io::ErrorKind::Other, e.to_string())
-    })?;
-
-    if let Some(manager) = lock.as_ref() {
-        manager.save()?;
-    }
-    Ok(())
-}
+// pub fn save_dictionary() -> Result<(), std::io::Error> {
+//     let lock = DICTIONARY.lock().map_err(|e| {
+//         std::io::Error::new(std::io::ErrorKind::Other, e.to_string())
+//     })?;
+// 
+//     if let Some(manager) = lock.as_ref() {
+//         manager.save()?;
+//     }
+//     Ok(())
+// }
 
 pub fn print_dictionary() {
     if let Ok(lock) = DICTIONARY.lock() {
         if let Some(manager) = lock.as_ref() {
             println!("Dictionary contents:");
-            for (user_id, dict) in &manager.dictionaries {
-                println!("User {}: {:#?}", user_id, dict);
+            
+            let chats = &manager.chats;
+            for (chat_id, chat) in chats {
+                println!("Chat ID {}: Chat name {:#?}", chat_id, chat.name);
+                for (user_id, user) in &chat.users {
+                    println!("User ID {}: User name {:#?}", user_id, user.username);
+                    for (trigger, reply) in &user.replies {
+                        println!("Trigger {}: Reply {:#?}", trigger, reply);
+                    }
+                }
             }
         } else {
             println!("Dictionary is not initialized");
