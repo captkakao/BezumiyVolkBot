@@ -6,6 +6,7 @@ use commands::Command;
 use handlers::{start::*, help::*};
 use teloxide::prelude::*;
 use dotenv::dotenv;
+use teloxide::sugar::request::RequestReplyExt;
 use utils::dictionary::{get_dictionary_response, initialize_dictionary, print_dictionary};
 
 #[tokio::main]
@@ -74,7 +75,9 @@ async fn main() {
                     println!("User {} in chat {} says: {}", user_id, chat_id, text);
 
                     if let Some(response) = get_dictionary_response(chat_id, user_id, text) {
-                        bot.send_message(msg.chat.id, response).await?;
+                        bot.send_message(msg.chat.id, response)
+                            .reply_to(msg)
+                            .await?;
                         return Ok(());
                     }
                 }
