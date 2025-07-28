@@ -3,16 +3,18 @@
     "-4957830380": {
       "name": "Testing BezumniyVolkBot",
       "users": {
-        "captkakao": {
-          "fullname": "Sultanbek Serik",
-          "replies": {
-            "hello": "fucku",
-            "suka": "sam suka"
-          }
-        },
         "bezumniy_volk_bot": {
           "fullname": "BezumniyVolkBot",
           "replies": {}
+        },
+        "captkakao": {
+          "fullname": "Sultanbek Serik",
+          "replies": {
+            "qwer": "qqq",
+            "qwe": "qweqwe",
+            "hello": "fucku",
+            "suka": "sam suka"
+          }
         }
       }
     }

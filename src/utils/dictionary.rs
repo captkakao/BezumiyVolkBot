@@ -115,17 +115,6 @@ pub fn get_dictionary_response(chat_id: ChatId, username: Username, key: &str) -
     }
 }
 
-// pub fn save_dictionary() -> Result<(), std::io::Error> {
-//     let lock = DICTIONARY.lock().map_err(|e| {
-//         std::io::Error::new(std::io::ErrorKind::Other, e.to_string())
-//     })?;
-// 
-//     if let Some(manager) = lock.as_ref() {
-//         manager.save()?;
-//     }
-//     Ok(())
-// }
-
 pub fn print_dictionary() {
     if let Ok(lock) = DICTIONARY.lock() {
         if let Some(manager) = lock.as_ref() {

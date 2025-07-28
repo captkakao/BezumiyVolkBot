@@ -1,5 +1,6 @@
-use teloxide::{prelude::*, utils::command::BotCommands};
+use teloxide::{prelude::*, types::MessageId};
 use crate::utils::dictionary::{add_trigger_dict, DICTIONARY};
+use std::time::Duration;
 
 pub async fn add_trigger(bot: Bot, msg: Message) -> ResponseResult<()> {
     if let Err(e) = bot.delete_message(msg.chat.id, msg.id).await {
@@ -28,7 +29,12 @@ pub async fn add_trigger(bot: Bot, msg: Message) -> ResponseResult<()> {
 
         match add_trigger_dict(chat_id, tg_username, trigger_key.clone(), trigger_value.clone()) {
             Ok(_) => {
-                bot.send_message(msg.chat.id, format!("Added '{}' to your triggers dictionary!", trigger_key)).await?;
+                let success_msg = bot.send_message(
+                    msg.chat.id,
+                    format!("Added '{}' to your triggers dictionary!", trigger_key)
+                ).await?;
+                tokio::spawn(delete_message_after_delay(bot.clone(), success_msg.chat.id, success_msg.id, 1));
+
             }
             Err(e) => {
                 bot.send_message(msg.chat.id, format!("Error adding trigger: {}", e)).await?;
@@ -37,4 +43,11 @@ pub async fn add_trigger(bot: Bot, msg: Message) -> ResponseResult<()> {
     }
 
     Ok(())
+}
+
+async fn delete_message_after_delay(bot: Bot, chat_id: ChatId, message_id: MessageId, seconds: u64) {
+    tokio::time::sleep(Duration::from_secs(seconds)).await;
+    if let Err(e) = bot.delete_message(chat_id, message_id).await {
+        println!("Failed to delete message: {}", e);
+    }
 }
