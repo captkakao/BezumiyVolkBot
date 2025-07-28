@@ -9,9 +9,7 @@ type ChatId = String;
 type Trigger = String;
 type Reply = String;
 
-pub(crate) fn default_reply_frequency() -> u32 {
-    3
-}
+pub(crate) fn default_reply_frequency() -> u32 { 2 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, Default)]
 pub struct User {

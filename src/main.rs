@@ -63,19 +63,16 @@ async fn main() {
                         } else {
                             return Ok(());
                         };
-                        
+
                         if should_reply {
                             bot.send_message(msg.chat.id, response)
                                 .reply_to(msg)
                                 .await?;
                         }
-                        
+
                         return Ok(());
                     }
                 }
-
-                let reply = format!("Fuck {}", text);
-                bot.send_message(msg.chat.id, reply).await?;
             }
             Ok(())
         }));

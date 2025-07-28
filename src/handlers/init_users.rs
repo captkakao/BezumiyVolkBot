@@ -17,7 +17,7 @@ pub async fn init_users(bot: Bot, msg: Message) -> ResponseResult<()> {
             if !admin.can_delete_messages {
                 bot.send_message(
                     msg.chat.id,
-                    "⚠️ I need 'Delete Messages' permission to work properly.\n\
+                    "I need 'Delete Messages' permission to work properly.\n\
                      Please update my admin permissions to include:\n\
                      - Delete Messages\n\
                      - Send Messages\n\
@@ -28,7 +28,7 @@ pub async fn init_users(bot: Bot, msg: Message) -> ResponseResult<()> {
         _ => {
             bot.send_message(
                 msg.chat.id,
-                "⚠️ I need to be an administrator to work properly.\n\
+                "I need to be an administrator to work properly.\n\
                  Please add me as admin with these permissions:\n\
                  - Delete Messages\n\
                  - Send Messages\n\
@@ -72,7 +72,7 @@ pub async fn init_users(bot: Bot, msg: Message) -> ResponseResult<()> {
 
             // Update chat name
             chat.name = chat_title;
-            
+
             if chat.reply_frequency == 0 {
                 chat.reply_frequency = crate::utils::dictionary::default_reply_frequency();
             }
@@ -104,7 +104,7 @@ pub async fn init_users(bot: Bot, msg: Message) -> ResponseResult<()> {
         Ok(users_count) => {
             bot.send_message(
                 msg.chat.id,
-                format!("✅ Successfully initialized {} users", users_count)
+                format!("Successfully initialized {} users", users_count)
             ).await?;
         }
         Err(e) => {
