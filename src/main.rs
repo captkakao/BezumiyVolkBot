@@ -3,7 +3,7 @@ mod handlers;
 mod utils;
 
 use commands::Command;
-use handlers::{start::*, help::*};
+use handlers::{start::*, help::*, init_users::*};
 use teloxide::prelude::*;
 use dotenv::dotenv;
 use teloxide::sugar::request::RequestReplyExt;
@@ -36,29 +36,8 @@ async fn main() {
                     bot.send_message(msg.chat.id, "Pong !").await?;
                     Ok(())
                 },
+                Command::InitUsers => init_users(bot, msg).await,
                 Command::Add => {
-                    // if let Some(text) = msg.text() {
-                    //     let parts: Vec<&str> = text.splitn(2, ' ').collect();
-                    //     if parts.len() == 2 {
-                    //         let entry: Vec<&str> = parts[1].split('=').collect();
-                    //         if entry.len() == 2 {
-                    //             let key = entry[0].trim().to_string();
-                    //             let value = entry[1].trim().to_string();
-                    //             let user_id = msg.from().map(|user| user.id.0.to_string()).unwrap_or_default();
-                    // 
-                    //             match add_dictionary_entry(user_id, key.clone(), value.clone()) {
-                    //                 Ok(_) => {
-                    //                     bot.send_message(msg.chat.id, format!("Added '{}' to your dictionary!", key)).await?;
-                    //                 }
-                    //                 Err(e) => {
-                    //                     bot.send_message(msg.chat.id, format!("Error adding entry: {}", e)).await?;
-                    //                 }
-                    //             }
-                    //         } else {
-                    //             bot.send_message(msg.chat.id, "Usage: /add key=value").await?;
-                    //         }
-                    //     }
-                    // }
                     Ok(())
                 }
             }

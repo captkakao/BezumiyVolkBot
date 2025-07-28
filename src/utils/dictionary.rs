@@ -28,7 +28,7 @@ pub struct DictionaryManager {
 }
 
 // Global instance as Option
-static DICTIONARY: Mutex<Option<DictionaryManager>> = Mutex::new(None);
+pub(crate) static DICTIONARY: Mutex<Option<DictionaryManager>> = Mutex::new(None);
 
 impl DictionaryManager {
     pub fn save(&self) -> Result<(), std::io::Error> {

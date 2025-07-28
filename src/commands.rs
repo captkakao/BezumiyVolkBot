@@ -12,6 +12,8 @@ pub enum Command {
     Start,
     #[command(description = "ping the bot")]
     Ping,
-    #[command(description = "add new dictionary entry: /add key=value")]
+    #[command(description = "initialize users from chat")]
+    InitUsers,
+    #[command(description = "add new dictionary entry: /add chat_id username key=value")]
     Add,
 }
