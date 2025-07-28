@@ -7,7 +7,7 @@ use handlers::{start::*, help::*, init_users::*, add_trigger::*};
 use teloxide::prelude::*;
 use dotenv::dotenv;
 use teloxide::sugar::request::RequestReplyExt;
-use utils::dictionary::{get_dictionary_response, initialize_dictionary, print_dictionary};
+use utils::dictionary::{DICTIONARY, get_dictionary_response, initialize_dictionary, print_dictionary};
 
 #[tokio::main]
 async fn main() {
@@ -51,10 +51,24 @@ async fn main() {
 
                     println!("User {} in chat {} says: {}", username, chat_id, text);
 
-                    if let Some(response) = get_dictionary_response(chat_id, username, text) {
-                        bot.send_message(msg.chat.id, response)
-                            .reply_to(msg)
-                            .await?;
+                    if let Some(response) = get_dictionary_response(chat_id.clone(), username, text) {
+                        let should_reply = if let Ok(mut lock) = DICTIONARY.lock() {
+                            if let Some(manager) = lock.as_mut() {
+                                let should_reply = manager.should_reply_to_message(&chat_id);
+                                manager.save().ok();
+                                should_reply
+                            } else {
+                                return Ok(());
+                            }
+                        } else {
+                            return Ok(());
+                        };
+                        
+                        if should_reply {
+                            bot.send_message(msg.chat.id, response)
+                                .reply_to(msg)
+                                .await?;
+                        }
                         
                         return Ok(());
                     }

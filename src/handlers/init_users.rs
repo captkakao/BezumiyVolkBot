@@ -63,6 +63,8 @@ pub async fn init_users(bot: Bot, msg: Message) -> ResponseResult<()> {
             // Get or create chat entry
             let chat = manager.chats.entry(chat_id.clone()).or_insert_with(|| {
                 Chat {
+                    message_counter: 0,
+                    reply_frequency: crate::utils::dictionary::default_reply_frequency(),
                     name: chat_title.clone(),
                     users: HashMap::new(),
                 }
@@ -70,6 +72,10 @@ pub async fn init_users(bot: Bot, msg: Message) -> ResponseResult<()> {
 
             // Update chat name
             chat.name = chat_title;
+            
+            if chat.reply_frequency == 0 {
+                chat.reply_frequency = crate::utils::dictionary::default_reply_frequency();
+            }
 
             // Add or update members
             for (username, fullname) in users_data {

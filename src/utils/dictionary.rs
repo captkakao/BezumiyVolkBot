@@ -9,6 +9,10 @@ type ChatId = String;
 type Trigger = String;
 type Reply = String;
 
+pub(crate) fn default_reply_frequency() -> u32 {
+    3
+}
+
 #[derive(Debug, Serialize, Deserialize, Clone, Default)]
 pub struct User {
     pub fullname: String,
@@ -17,6 +21,11 @@ pub struct User {
 
 #[derive(Debug, Serialize, Deserialize, Clone, Default)]
 pub struct Chat {
+    pub message_counter: u32,
+    
+    #[serde(default = "default_reply_frequency")]
+    pub reply_frequency: u32,
+    
     pub name: String,
     pub users: HashMap<Username, User>,
 }
@@ -30,6 +39,22 @@ pub struct DictionaryManager {
 pub(crate) static DICTIONARY: Mutex<Option<DictionaryManager>> = Mutex::new(None);
 
 impl DictionaryManager {
+    pub fn should_reply_to_message(&mut self, chat_id: &ChatId) -> bool {
+        let chat = self.chats.entry(chat_id.clone()).or_insert_with(|| Chat {
+            name: "New Chat".to_string(),
+            users: HashMap::new(),
+            message_counter: 0,
+            reply_frequency: default_reply_frequency(),
+        });
+
+        if chat.reply_frequency == 0 {
+            chat.reply_frequency = default_reply_frequency();
+        }
+
+        chat.message_counter += 1;
+        chat.message_counter % chat.reply_frequency == 0
+    }
+
     pub fn save(&self) -> Result<(), std::io::Error> {
         let data = serde_json::to_string_pretty(&self).map_err(|e| {
             std::io::Error::new(std::io::ErrorKind::Other, e.to_string())
@@ -39,9 +64,15 @@ impl DictionaryManager {
 
     pub fn add_entry(&mut self, chat_id: ChatId, username: Username, trigger: String, reply: String) {
         let chat = self.chats.entry(chat_id).or_insert_with(|| Chat {
+            message_counter: 0,
+            reply_frequency: default_reply_frequency(),
             name: "New Chat".to_string(),
             users: HashMap::new(),
         });
+        
+        if chat.reply_frequency == 0 {
+            chat.reply_frequency = default_reply_frequency()
+        }
 
         let user = chat.users.entry(username).or_insert_with(|| User {
             fullname: "New User".to_string(),
