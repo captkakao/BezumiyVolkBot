@@ -49,14 +49,15 @@ async fn main() {
             if let Some(text) = msg.text() {
                 if let Some(user) = msg.from() {
                     let chat_id = msg.chat.id.0.to_string();
-                    let user_id = user.id.0.to_string();
+                    let username = user.username.clone().unwrap_or_default();
 
-                    println!("User {} in chat {} says: {}", user_id, chat_id, text);
+                    println!("User {} in chat {} says: {}", username, chat_id, text);
 
-                    if let Some(response) = get_dictionary_response(chat_id, user_id, text) {
+                    if let Some(response) = get_dictionary_response(chat_id, username, text) {
                         bot.send_message(msg.chat.id, response)
                             .reply_to(msg)
                             .await?;
+                        
                         return Ok(());
                     }
                 }

@@ -4,14 +4,13 @@ use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
 use std::path::Path;
 
-type UserId = String;
+type Username = String;
 type ChatId = String;
 type Trigger = String;
 type Reply = String;
 
 #[derive(Debug, Serialize, Deserialize, Clone, Default)]
 pub struct User {
-    pub username: String,
     pub fullname: String,
     pub replies: HashMap<Trigger, Reply>,
 }
@@ -19,7 +18,7 @@ pub struct User {
 #[derive(Debug, Serialize, Deserialize, Clone, Default)]
 pub struct Chat {
     pub name: String,
-    pub users: HashMap<UserId, User>,
+    pub users: HashMap<Username, User>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, Default)]
@@ -38,14 +37,13 @@ impl DictionaryManager {
         fs::write("dictionaries.json", data)
     }
 
-    pub fn add_entry(&mut self, chat_id: ChatId, user_id: UserId, key: String, value: String) {
+    pub fn add_entry(&mut self, chat_id: ChatId, username: Username, key: String, value: String) {
         let chat = self.chats.entry(chat_id).or_insert_with(|| Chat {
             name: "New Chat".to_string(),
             users: HashMap::new(),
         });
 
-        let user = chat.users.entry(user_id).or_insert_with(|| User {
-            username: "New User".to_string(),
+        let user = chat.users.entry(username).or_insert_with(|| User {
             fullname: "New User".to_string(),
             replies: HashMap::new(),
         });
@@ -53,9 +51,10 @@ impl DictionaryManager {
         user.replies.insert(key, value);
     }
 
-    pub fn get_response(&self, chat_id: ChatId, user_id: UserId, key: &str) -> Option<&String> {
+    pub fn get_response(&self, chat_id: ChatId, username: Username, key: &str) -> Option<&String> {
         let chat = self.chats.get(&chat_id)?;
-        let user = chat.users.get(&user_id)?;
+        let user = chat.users.get(&username)?;
+        
         user.replies.get(key)
     }
 }
@@ -96,7 +95,7 @@ pub fn initialize_dictionary() -> Result<(), std::io::Error> {
 }
 
 
-// pub fn add_dictionary_entry(user_id: UserId, key: String, value: String) -> Result<(), std::io::Error> {
+// pub fn add_dictionary_entry(user_id: Username, key: String, value: String) -> Result<(), std::io::Error> {
 //     let mut lock = DICTIONARY.lock().map_err(|e| {
 //         std::io::Error::new(std::io::ErrorKind::Other, e.to_string())
 //     })?;
@@ -108,9 +107,9 @@ pub fn initialize_dictionary() -> Result<(), std::io::Error> {
 //     Ok(())
 // }
 // 
-pub fn get_dictionary_response(chat_id: ChatId, user_id: UserId, key: &str) -> Option<String> {
+pub fn get_dictionary_response(chat_id: ChatId, username: Username, key: &str) -> Option<String> {
     if let Ok(lock) = DICTIONARY.lock() {
-        lock.as_ref()?.get_response(chat_id, user_id, key).cloned()
+        lock.as_ref()?.get_response(chat_id, username, key).cloned()
     } else {
         None
     }
@@ -136,7 +135,7 @@ pub fn print_dictionary() {
             for (chat_id, chat) in chats {
                 println!("Chat ID {}: Chat name {:#?}", chat_id, chat.name);
                 for (user_id, user) in &chat.users {
-                    println!("User ID {}: User name {:#?}", user_id, user.username);
+                    println!("User ID {}: User full name {:#?}", user_id, user.fullname);
                     for (trigger, reply) in &user.replies {
                         println!("Trigger {}: Reply {:#?}", trigger, reply);
                     }

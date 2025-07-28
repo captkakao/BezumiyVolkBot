@@ -16,14 +16,13 @@ pub async fn init_users(bot: Bot, msg: Message) -> ResponseResult<()> {
     // Prepare the data outside of the mutex lock
     let users_data: Vec<_> = admins.into_iter().map(|member| {
         let user = member.user;
-        let user_id = user.id.0.to_string();
         let username = user.username.unwrap_or_default();
         let fullname = format!("{} {}",
                                user.first_name,
                                user.last_name.unwrap_or_default()
         ).trim().to_string();
 
-        (user_id, username, fullname)
+        (username, fullname)
     }).collect();
 
     // Update dictionary in a separate scope to ensure MutexGuard is dropped
@@ -45,18 +44,15 @@ pub async fn init_users(bot: Bot, msg: Message) -> ResponseResult<()> {
             chat.name = chat_title;
 
             // Add or update members
-            for (user_id, username, fullname) in users_data {
-                let user_entry = chat.users.entry(user_id).or_insert_with(|| {
+            for (username, fullname) in users_data {
+                let user_entry = chat.users.entry(username).or_insert_with(|| {
                     User {
-                        username: username.clone(),
                         fullname: fullname.clone(),
                         replies: HashMap::new(),
                     }
                 });
 
-                // Update user info while preserving their replies
-                user_entry.username = username;
-                user_entry.fullname = fullname;
+                // user_entry.fullname = fullname;
             }
 
             let users_count = chat.users.len();

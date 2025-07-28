@@ -3,8 +3,7 @@
     "-4957830381": {
       "name": "Безумно волкилар",
       "users": {
-        "769926681": {
-          "username": "captkakao",
+        "captkakao": {
           "fullname": "Sultanbek Serik",
           "replies": {
             "fuck": "go fuck yourself",
@@ -16,10 +15,12 @@
     "-4957830380": {
       "name": "Testing BezumniyVolkBot",
       "users": {
-        "769926681": {
-          "username": "captkakao",
+        "captkakao": {
           "fullname": "Sultanbek Serik",
-          "replies": {}
+          "replies": {
+            "fuck": "go fuck yourself",
+            "hello": "hello mf"
+          }
         }
       }
     }
