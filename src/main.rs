@@ -3,7 +3,7 @@ mod handlers;
 mod utils;
 
 use commands::Command;
-use handlers::{start::*, help::*, init_users::*};
+use handlers::{start::*, help::*, init_users::*, add_trigger::*};
 use teloxide::prelude::*;
 use dotenv::dotenv;
 use teloxide::sugar::request::RequestReplyExt;
@@ -37,9 +37,7 @@ async fn main() {
                     Ok(())
                 },
                 Command::InitUsers => init_users(bot, msg).await,
-                Command::Add => {
-                    Ok(())
-                }
+                Command::Add => add_trigger(bot, msg).await,
             }
         });
 

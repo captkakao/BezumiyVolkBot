@@ -1,25 +1,13 @@
 {
   "chats": {
-    "-4957830381": {
-      "name": "Безумно волкилар",
-      "users": {
-        "captkakao": {
-          "fullname": "Sultanbek Serik",
-          "replies": {
-            "fuck": "go fuck yourself",
-            "hello": "hello mf"
-          }
-        }
-      }
-    },
     "-4957830380": {
       "name": "Testing BezumniyVolkBot",
       "users": {
         "captkakao": {
           "fullname": "Sultanbek Serik",
           "replies": {
-            "fuck": "go fuck yourself",
-            "hello": "hello mf"
+            "suka": "sam suka",
+            "hello": "fucku"
           }
         }
       }

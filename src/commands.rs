@@ -14,6 +14,6 @@ pub enum Command {
     Ping,
     #[command(description = "initialize users from chat")]
     InitUsers,
-    #[command(description = "add new dictionary entry: /add chat_id username key=value")]
+    #[command(description = "add new dictionary entry: /add username key=value")]
     Add,
 }

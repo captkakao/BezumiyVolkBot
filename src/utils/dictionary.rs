@@ -37,7 +37,7 @@ impl DictionaryManager {
         fs::write("dictionaries.json", data)
     }
 
-    pub fn add_entry(&mut self, chat_id: ChatId, username: Username, key: String, value: String) {
+    pub fn add_entry(&mut self, chat_id: ChatId, username: Username, trigger: String, reply: String) {
         let chat = self.chats.entry(chat_id).or_insert_with(|| Chat {
             name: "New Chat".to_string(),
             users: HashMap::new(),
@@ -48,7 +48,7 @@ impl DictionaryManager {
             replies: HashMap::new(),
         });
 
-        user.replies.insert(key, value);
+        user.replies.insert(trigger, reply);
     }
 
     pub fn get_response(&self, chat_id: ChatId, username: Username, key: &str) -> Option<&String> {
@@ -95,18 +95,18 @@ pub fn initialize_dictionary() -> Result<(), std::io::Error> {
 }
 
 
-// pub fn add_dictionary_entry(user_id: Username, key: String, value: String) -> Result<(), std::io::Error> {
-//     let mut lock = DICTIONARY.lock().map_err(|e| {
-//         std::io::Error::new(std::io::ErrorKind::Other, e.to_string())
-//     })?;
-// 
-//     if let Some(manager) = lock.as_mut() {
-//         manager.add_entry(user_id, key, value);
-//         manager.save()?;
-//     }
-//     Ok(())
-// }
-// 
+pub fn add_trigger_dict(chat_id: ChatId, username: Username, trigger: String, reply: String) -> Result<(), std::io::Error> {
+    let mut lock = DICTIONARY.lock().map_err(|e| {
+        std::io::Error::new(std::io::ErrorKind::Other, e.to_string())
+    })?;
+
+    if let Some(manager) = lock.as_mut() {
+        manager.add_entry(chat_id, username, trigger, reply);
+        manager.save()?;
+    }
+    Ok(())
+}
+
 pub fn get_dictionary_response(chat_id: ChatId, username: Username, key: &str) -> Option<String> {
     if let Ok(lock) = DICTIONARY.lock() {
         lock.as_ref()?.get_response(chat_id, username, key).cloned()
