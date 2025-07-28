@@ -2,6 +2,10 @@ use teloxide::{prelude::*, utils::command::BotCommands};
 use crate::utils::dictionary::{add_trigger_dict, DICTIONARY};
 
 pub async fn add_trigger(bot: Bot, msg: Message) -> ResponseResult<()> {
+    if let Err(e) = bot.delete_message(msg.chat.id, msg.id).await {
+        println!("Failed to delete command message: {}", e);
+    }
+
     if let Some(text) = msg.text() {
         let parts: Vec<&str> = text.splitn(3, ' ').collect();
         if parts.len() < 3 {

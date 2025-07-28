@@ -6,9 +6,13 @@
         "captkakao": {
           "fullname": "Sultanbek Serik",
           "replies": {
-            "suka": "sam suka",
-            "hello": "fucku"
+            "hello": "fucku",
+            "suka": "sam suka"
           }
+        },
+        "bezumniy_volk_bot": {
+          "fullname": "BezumniyVolkBot",
+          "replies": {}
         }
       }
     }
