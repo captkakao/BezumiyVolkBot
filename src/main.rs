@@ -4,9 +4,13 @@ mod utils;
 
 use commands::Command;
 use handlers::{start::*, help::*, init_users::*, add_trigger::*};
-use teloxide::prelude::*;
 use dotenv::dotenv;
 use teloxide::sugar::request::RequestReplyExt;
+use teloxide::{
+    prelude::*,
+    update_listeners,
+    dispatching::Dispatcher,
+};
 use utils::dictionary::{DICTIONARY, get_dictionary_response, initialize_dictionary, print_dictionary};
 
 #[tokio::main]
@@ -24,6 +28,12 @@ async fn main() {
     print_dictionary();
 
     let bot = Bot::from_env();
+
+    match bot.delete_webhook().drop_pending_updates(true).await {
+        Ok(_) => log::info!("Successfully cleared pending updates"),
+        Err(e) => log::warn!("Failed to clear pending updates: {}", e),
+    }
+
 
     // Handler for commands
     let command_handler = Update::filter_message()

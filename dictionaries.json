@@ -1,22 +1,22 @@
 {
   "chats": {
     "-4957830380": {
-      "message_counter": 20,
+      "message_counter": 22,
       "reply_frequency": 2,
       "name": "Testing BezumniyVolkBot",
       "users": {
-        "captkakao": {
-          "fullname": "Sultanbek Serik",
-          "replies": {
-            "suka": "samsuka",
-            "eww": "weee",
-            "qwe": "qweqwe",
-            "hello": "fuckyiou"
-          }
-        },
         "bezumniy_volk_bot": {
           "fullname": "BezumniyVolkBot",
           "replies": {}
+        },
+        "captkakao": {
+          "fullname": "Sultanbek Serik",
+          "replies": {
+            "eww": "weee",
+            "suka": "samsuka",
+            "hello": "fuckyiou",
+            "qwe": "qweqwe"
+          }
         }
       },
       "common_replies": {
@@ -28,32 +28,32 @@
       "reply_frequency": 2,
       "name": "Gay House",
       "users": {
-        "bezumniy_volk_bot": {
-          "fullname": "BezumniyVolkBot",
-          "replies": {}
-        },
         "mxslade": {
           "fullname": "Turar Muldashev",
           "replies": {
             "пусси татти": "член катты",
             "поху+поху": "поху емес отирик айтпа, сен симулянт",
-            "вопросы?": "сосал?",
-            "убийца богов": "покоритель хуев"
-          }
-        },
-        "captkakao": {
-          "fullname": "Sultanbek Serik",
-          "replies": {
-            "кек": "бек",
-            "поху маган": "поху болса дамбал киип ал басына",
-            "жаксы ма": "пашел наху"
+            "убийца богов": "покоритель хуев",
+            "вопросы?": "сосал?"
           }
         },
         "gafarhere": {
           "fullname": "New User",
           "replies": {
-            "привет": "пидр",
-            "мен лучший": "yes you are!"
+            "мен лучший": "yes you are!",
+            "привет": "пидр"
+          }
+        },
+        "bezumniy_volk_bot": {
+          "fullname": "BezumniyVolkBot",
+          "replies": {}
+        },
+        "captkakao": {
+          "fullname": "Sultanbek Serik",
+          "replies": {
+            "жаксы ма": "пашел наху",
+            "поху маган": "поху болса дамбал киип ал басына",
+            "кек": "бек"
           }
         }
       },
