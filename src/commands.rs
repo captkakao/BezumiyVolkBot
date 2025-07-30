@@ -16,4 +16,6 @@ pub enum Command {
     InitUsers,
     #[command(description = "add new dictionary entry: /add username key=value or /add all key=value")]
     Add,
+    #[command(description = "get dictionary entries: /getdict username or /getdict all", hide)]
+    GetDict,
 }
