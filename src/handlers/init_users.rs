@@ -1,8 +1,6 @@
 use teloxide::{prelude::*, types::{Message, ChatMemberKind}};
-use teloxide::utils::command::BotCommands;
 use std::collections::HashMap;
 use crate::{
-    commands::Command,
     utils::dictionary::{DICTIONARY, Chat, User}
 };
 
