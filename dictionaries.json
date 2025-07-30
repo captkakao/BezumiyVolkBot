@@ -1,16 +1,29 @@
 {
   "chats": {
-    "-1002893521152": {
-      "message_counter": 27,
-      "reply_frequency": 3,
-      "name": "Gay House",
+    "-4957830380": {
+      "message_counter": 14,
+      "reply_frequency": 2,
+      "name": "Testing BezumniyVolkBot",
       "users": {
-        "@gafarhere": {
-          "fullname": "New User",
+        "captkakao": {
+          "fullname": "Sultanbek Serik",
           "replies": {
-            "базилик": "хуелик"
+            "qwe": "qweqwe",
+            "eww": "weee",
+            "hello": "fuckyiou"
           }
         },
+        "bezumniy_volk_bot": {
+          "fullname": "BezumniyVolkBot",
+          "replies": {}
+        }
+      }
+    },
+    "-1002893521152": {
+      "message_counter": 28,
+      "reply_frequency": 2,
+      "name": "Gay House",
+      "users": {
         "gafarhere": {
           "fullname": "New User",
           "replies": {
@@ -21,40 +34,23 @@
         "mxslade": {
           "fullname": "Turar Muldashev",
           "replies": {
-            "поху+поху": "поху емес отирик айтпа, сен симулянт",
-            "убийца богов": "покоритель хуев",
+            "вопросы?": "сосал?",
             "пусси татти": "член катты",
-            "вопросы?": "сосал?"
+            "убийца богов": "покоритель хуев",
+            "поху+поху": "поху емес отирик айтпа, сен симулянт"
           }
         },
         "captkakao": {
           "fullname": "Sultanbek Serik",
           "replies": {
-            "кек": "бек",
             "жаксы ма": "пашел наху",
-            "поху маган": "поху болса дамбал киип ал басына"
+            "поху маган": "поху болса дамбал киип ал басына",
+            "кек": "бек"
           }
         },
         "bezumniy_volk_bot": {
           "fullname": "BezumniyVolkBot",
           "replies": {}
-        }
-      }
-    },
-    "-4957830380": {
-      "message_counter": 3,
-      "reply_frequency": 3,
-      "name": "Testing BezumniyVolkBot",
-      "users": {
-        "bezumniy_volk_bot": {
-          "fullname": "BezumniyVolkBot",
-          "replies": {}
-        },
-        "captkakao": {
-          "fullname": "Sultanbek Serik",
-          "replies": {
-            "hello": "fuckyiou"
-          }
         }
       }
     }

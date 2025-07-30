@@ -51,7 +51,7 @@ async fn main() {
 
                     println!("User {} in chat {} says: {}", username, chat_id, text);
 
-                    if let Some(response) = get_dictionary_response(chat_id.clone(), username, text) {
+                    if let Some(response) = get_dictionary_response(chat_id.clone(), username, text.to_lowercase()) {
                         let should_reply = if let Ok(mut lock) = DICTIONARY.lock() {
                             if let Some(manager) = lock.as_mut() {
                                 let should_reply = manager.should_reply_to_message(&chat_id);

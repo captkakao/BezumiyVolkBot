@@ -80,11 +80,16 @@ impl DictionaryManager {
         user.replies.insert(trigger, reply);
     }
 
-    pub fn get_response(&self, chat_id: ChatId, username: Username, key: &str) -> Option<&String> {
+    pub fn get_response(&self, chat_id: ChatId, username: Username, key: String) -> Option<&String> {
         let chat = self.chats.get(&chat_id)?;
         let user = chat.users.get(&username)?;
-        
-        user.replies.get(key)
+
+        let lowercase_input = key.to_lowercase();
+
+        user.replies
+            .iter()
+            .find(|(k, _)| lowercase_input.contains(&k.to_lowercase()))
+            .map(|(_, v)| v)
     }
 }
 
@@ -136,7 +141,7 @@ pub fn add_trigger_dict(chat_id: ChatId, username: Username, trigger: String, re
     Ok(())
 }
 
-pub fn get_dictionary_response(chat_id: ChatId, username: Username, key: &str) -> Option<String> {
+pub fn get_dictionary_response(chat_id: ChatId, username: Username, key: String) -> Option<String> {
     if let Ok(lock) = DICTIONARY.lock() {
         lock.as_ref()?.get_response(chat_id, username, key).cloned()
     } else {

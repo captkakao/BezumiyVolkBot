@@ -14,7 +14,7 @@ pub async fn add_trigger(bot: Bot, msg: Message) -> ResponseResult<()> {
             return Ok(());
         }
 
-        let tg_username = parts[1].trim().to_string();
+        let tg_username = parts[1].trim_start_matches('@').to_string();
         let trigger = parts[2];
         let trigger_details: Vec<&str> = trigger.splitn(2, '=').collect();
         if trigger_details.len() < 2 {
@@ -22,7 +22,7 @@ pub async fn add_trigger(bot: Bot, msg: Message) -> ResponseResult<()> {
             return Ok(());
         }
 
-        let trigger_key = trigger_details[0].trim().to_string();
+        let trigger_key = trigger_details[0].trim().to_lowercase();
         let trigger_value = trigger_details[1].trim().to_string();
 
         let chat_id = msg.chat.id.0.to_string();
