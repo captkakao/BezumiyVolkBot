@@ -67,6 +67,7 @@ pub async fn init_users(bot: Bot, msg: Message) -> ResponseResult<()> {
                     reply_frequency: crate::utils::dictionary::default_reply_frequency(),
                     name: chat_title.clone(),
                     users: HashMap::new(),
+                    common_replies: HashMap::new(),
                 }
             });
 

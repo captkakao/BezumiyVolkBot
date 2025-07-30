@@ -1,5 +1,5 @@
 use teloxide::{prelude::*, types::MessageId};
-use crate::utils::dictionary::{add_trigger_dict, DICTIONARY};
+use crate::utils::dictionary::{add_user_trigger, add_common_trigger};
 use std::time::Duration;
 
 pub async fn add_trigger(bot: Bot, msg: Message) -> ResponseResult<()> {
@@ -26,18 +26,34 @@ pub async fn add_trigger(bot: Bot, msg: Message) -> ResponseResult<()> {
         let trigger_value = trigger_details[1].trim().to_string();
 
         let chat_id = msg.chat.id.0.to_string();
+        
+        if tg_username == "all" {
+            match add_common_trigger(chat_id, trigger_key.clone(), trigger_value.clone()) {
+                Ok(_) => {
+                    let success_msg = bot.send_message(
+                        msg.chat.id,
+                        format!("Added '{}' to your triggers dictionary!", trigger_key)
+                    ).await?;
+                    tokio::spawn(delete_message_after_delay(bot.clone(), success_msg.chat.id, success_msg.id, 1));
 
-        match add_trigger_dict(chat_id, tg_username, trigger_key.clone(), trigger_value.clone()) {
-            Ok(_) => {
-                let success_msg = bot.send_message(
-                    msg.chat.id,
-                    format!("Added '{}' to your triggers dictionary!", trigger_key)
-                ).await?;
-                tokio::spawn(delete_message_after_delay(bot.clone(), success_msg.chat.id, success_msg.id, 1));
-
+                }
+                Err(e) => {
+                    bot.send_message(msg.chat.id, format!("Error adding trigger: {}", e)).await?;
+                }
             }
-            Err(e) => {
-                bot.send_message(msg.chat.id, format!("Error adding trigger: {}", e)).await?;
+        } else {
+            match add_user_trigger(chat_id, tg_username, trigger_key.clone(), trigger_value.clone()) {
+                Ok(_) => {
+                    let success_msg = bot.send_message(
+                        msg.chat.id,
+                        format!("Added '{}' to your triggers dictionary!", trigger_key)
+                    ).await?;
+                    tokio::spawn(delete_message_after_delay(bot.clone(), success_msg.chat.id, success_msg.id, 1));
+
+                }
+                Err(e) => {
+                    bot.send_message(msg.chat.id, format!("Error adding trigger: {}", e)).await?;
+                }
             }
         }
     }

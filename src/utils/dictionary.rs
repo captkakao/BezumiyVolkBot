@@ -9,7 +9,7 @@ type ChatId = String;
 type Trigger = String;
 type Reply = String;
 
-pub(crate) fn default_reply_frequency() -> u32 { 2 }
+pub(crate) fn default_reply_frequency() -> u32 { 3 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, Default)]
 pub struct User {
@@ -26,6 +26,7 @@ pub struct Chat {
     
     pub name: String,
     pub users: HashMap<Username, User>,
+    pub common_replies: HashMap<Trigger, Reply>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, Default)]
@@ -43,6 +44,7 @@ impl DictionaryManager {
             users: HashMap::new(),
             message_counter: 0,
             reply_frequency: default_reply_frequency(),
+            common_replies: HashMap::new(),
         });
 
         if chat.reply_frequency == 0 {
@@ -60,12 +62,13 @@ impl DictionaryManager {
         fs::write("dictionaries.json", data)
     }
 
-    pub fn add_entry(&mut self, chat_id: ChatId, username: Username, trigger: String, reply: String) {
+    pub fn add_user_entry(&mut self, chat_id: ChatId, username: Username, trigger: String, reply: String) {
         let chat = self.chats.entry(chat_id).or_insert_with(|| Chat {
             message_counter: 0,
             reply_frequency: default_reply_frequency(),
             name: "New Chat".to_string(),
             users: HashMap::new(),
+            common_replies: HashMap::new(),
         });
         
         if chat.reply_frequency == 0 {
@@ -80,16 +83,40 @@ impl DictionaryManager {
         user.replies.insert(trigger, reply);
     }
 
+    pub fn add_common_entry(&mut self, chat_id: ChatId, trigger: String, reply: String) {
+        let chat = self.chats.entry(chat_id).or_insert_with(|| Chat {
+            message_counter: 0,
+            reply_frequency: default_reply_frequency(),
+            name: "New Chat".to_string(),
+            users: HashMap::new(),
+            common_replies: HashMap::new(),
+        });
+
+        if chat.reply_frequency == 0 {
+            chat.reply_frequency = default_reply_frequency()
+        }
+        
+        chat.common_replies.insert(trigger, reply);
+    }
+
     pub fn get_response(&self, chat_id: ChatId, username: Username, key: String) -> Option<&String> {
         let chat = self.chats.get(&chat_id)?;
         let user = chat.users.get(&username)?;
 
         let lowercase_input = key.to_lowercase();
 
-        user.replies
+        let user_reply = user.replies
             .iter()
             .find(|(k, _)| lowercase_input.contains(&k.to_lowercase()))
-            .map(|(_, v)| v)
+            .map(|(_, v)| v);
+
+        match user_reply {
+            Some(reply) => Some(reply),
+            None => chat.common_replies
+                .iter()
+                .find(|(k, _)| lowercase_input.contains(&k.to_lowercase()))
+                .map(|(_, v)| v)
+        }
     }
 }
 
@@ -129,13 +156,25 @@ pub fn initialize_dictionary() -> Result<(), std::io::Error> {
 }
 
 
-pub fn add_trigger_dict(chat_id: ChatId, username: Username, trigger: String, reply: String) -> Result<(), std::io::Error> {
+pub fn add_user_trigger(chat_id: ChatId, username: Username, trigger: String, reply: String) -> Result<(), std::io::Error> {
     let mut lock = DICTIONARY.lock().map_err(|e| {
         std::io::Error::new(std::io::ErrorKind::Other, e.to_string())
     })?;
 
     if let Some(manager) = lock.as_mut() {
-        manager.add_entry(chat_id, username, trigger, reply);
+        manager.add_user_entry(chat_id, username, trigger, reply);
+        manager.save()?;
+    }
+    Ok(())
+}
+
+pub fn add_common_trigger(chat_id: ChatId, trigger: String, reply: String) -> Result<(), std::io::Error> {
+    let mut lock = DICTIONARY.lock().map_err(|e| {
+        std::io::Error::new(std::io::ErrorKind::Other, e.to_string())
+    })?;
+
+    if let Some(manager) = lock.as_mut() {
+        manager.add_common_entry(chat_id, trigger, reply);
         manager.save()?;
     }
     Ok(())

@@ -1,15 +1,16 @@
 {
   "chats": {
     "-4957830380": {
-      "message_counter": 14,
+      "message_counter": 20,
       "reply_frequency": 2,
       "name": "Testing BezumniyVolkBot",
       "users": {
         "captkakao": {
           "fullname": "Sultanbek Serik",
           "replies": {
-            "qwe": "qweqwe",
+            "suka": "samsuka",
             "eww": "weee",
+            "qwe": "qweqwe",
             "hello": "fuckyiou"
           }
         },
@@ -17,6 +18,9 @@
           "fullname": "BezumniyVolkBot",
           "replies": {}
         }
+      },
+      "common_replies": {
+        "tratatat": "qweqweqwe"
       }
     },
     "-1002893521152": {
@@ -24,35 +28,36 @@
       "reply_frequency": 2,
       "name": "Gay House",
       "users": {
-        "gafarhere": {
-          "fullname": "New User",
-          "replies": {
-            "мен лучший": "yes you are!",
-            "привет": "пидр"
-          }
+        "bezumniy_volk_bot": {
+          "fullname": "BezumniyVolkBot",
+          "replies": {}
         },
         "mxslade": {
           "fullname": "Turar Muldashev",
           "replies": {
-            "вопросы?": "сосал?",
             "пусси татти": "член катты",
-            "убийца богов": "покоритель хуев",
-            "поху+поху": "поху емес отирик айтпа, сен симулянт"
+            "поху+поху": "поху емес отирик айтпа, сен симулянт",
+            "вопросы?": "сосал?",
+            "убийца богов": "покоритель хуев"
           }
         },
         "captkakao": {
           "fullname": "Sultanbek Serik",
           "replies": {
-            "жаксы ма": "пашел наху",
+            "кек": "бек",
             "поху маган": "поху болса дамбал киип ал басына",
-            "кек": "бек"
+            "жаксы ма": "пашел наху"
           }
         },
-        "bezumniy_volk_bot": {
-          "fullname": "BezumniyVolkBot",
-          "replies": {}
+        "gafarhere": {
+          "fullname": "New User",
+          "replies": {
+            "привет": "пидр",
+            "мен лучший": "yes you are!"
+          }
         }
-      }
+      },
+      "common_replies": {}
     }
   }
 }
