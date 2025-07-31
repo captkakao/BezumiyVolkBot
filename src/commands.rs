@@ -14,8 +14,10 @@ pub enum Command {
     Ping,
     #[command(description = "initialize users from chat")]
     InitUsers,
-    #[command(description = "add new dictionary entry: /add username key=value or /add all key=value")]
+    #[command(description = "add new dictionary entry: \n/add username key=value or \n/add all key=value")]
     Add,
+    #[command(description = "change trigger reply frequency: /changefrq 4")]
+    ChangeFrq,
     #[command(description = "get dictionary entries: /getdict username or /getdict all", hide)]
     GetDict,
 }

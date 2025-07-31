@@ -3,12 +3,18 @@ mod handlers;
 mod utils;
 
 use commands::Command;
-use handlers::{start::*, help::*, init_users::*, add_trigger::*, get_dict::*};
+use handlers::{
+    start::*, 
+    help::*, 
+    init_users::*, 
+    add_trigger::*, 
+    get_dict::*, 
+    change_reply_frequency::*
+};
 use dotenv::dotenv;
 use teloxide::sugar::request::RequestReplyExt;
 use teloxide::{
     prelude::*,
-    update_listeners,
     dispatching::Dispatcher,
 };
 use utils::dictionary::{DICTIONARY, get_dictionary_response, initialize_dictionary, print_dictionary};
@@ -48,7 +54,8 @@ async fn main() {
                 },
                 Command::InitUsers => init_users(bot, msg).await,
                 Command::Add => add_trigger(bot, msg).await,
-                Command::GetDict => get_dict(bot, msg).await
+                Command::GetDict => get_dict(bot, msg).await,
+                Command::ChangeFrq => change_reply_frequency(bot, msg).await,
             }
         });
 

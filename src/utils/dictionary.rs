@@ -99,6 +99,18 @@ impl DictionaryManager {
         chat.common_replies.insert(trigger, reply);
     }
 
+    pub fn update_reply_freq(&mut self, chat_id: ChatId, reply_frq: u32) {
+        let chat = self.chats.entry(chat_id).or_insert_with(|| Chat {
+            message_counter: 0,
+            reply_frequency: default_reply_frequency(),
+            name: "New Chat".to_string(),
+            users: HashMap::new(),
+            common_replies: HashMap::new(),
+        });
+
+        chat.reply_frequency = reply_frq;
+    }
+
     pub fn get_response(&self, chat_id: ChatId, username: Username, key: String) -> Option<&String> {
         let chat = self.chats.get(&chat_id)?;
         let user = chat.users.get(&username)?;
@@ -175,6 +187,18 @@ pub fn add_common_trigger(chat_id: ChatId, trigger: String, reply: String) -> Re
 
     if let Some(manager) = lock.as_mut() {
         manager.add_common_entry(chat_id, trigger, reply);
+        manager.save()?;
+    }
+    Ok(())
+}
+
+pub fn update_reply_frequency(chat_id: ChatId, reply_frq: u32) -> Result<(), std::io::Error> {
+    let mut lock = DICTIONARY.lock().map_err(|e| {
+        std::io::Error::new(std::io::ErrorKind::Other, e.to_string())
+    })?;
+
+    if let Some(manager) = lock.as_mut() {
+        manager.update_reply_freq(chat_id, reply_frq);
         manager.save()?;
     }
     Ok(())
