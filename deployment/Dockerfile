@@ -11,16 +11,13 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Create app directory and set permissions
 RUN mkdir -p /app && chmod 755 /app
 
 COPY --from=builder /app/target/release/BezumniyVolkBot /usr/local/bin/bot
 RUN chmod +x /usr/local/bin/bot
 
-# Copy dictionaries.json to app directory
 COPY --from=builder /app/dictionaries.json /app/dictionaries.json
 
-# Create user and set ownership
 RUN useradd -r -s /bin/false -d /app botuser
 RUN chown -R botuser:botuser /app
 
