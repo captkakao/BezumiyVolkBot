@@ -20,6 +20,8 @@ pub enum Command {
     Delete,
     #[command(description = "change trigger reply frequency: /changefrq 4")]
     ChangeFrq,
-    #[command(description = "get dictionary entries: /getdict username or /getdict all", hide)]
+    #[command(description = "get dictionary entries: /getdict", hide)]
     GetDict,
+    #[command(description = "set dictionary entries: /setdict", hide)]
+    SetDict,
 }

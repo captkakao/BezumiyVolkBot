@@ -10,6 +10,7 @@ use handlers::{
     add_trigger::*, 
     delete_trigger::*,
     get_dict::*,
+    set_dict::*,
     change_reply_frequency::*
 };
 use dotenv::dotenv;
@@ -57,6 +58,7 @@ async fn main() {
                 Command::Add => add_trigger(bot, msg).await,
                 Command::Delete => delete_trigger(bot, msg).await,
                 Command::GetDict => get_dict(bot, msg).await,
+                Command::SetDict => set_dict(bot, msg).await,
                 Command::ChangeFrq => change_reply_frequency(bot, msg).await,
             }
         });

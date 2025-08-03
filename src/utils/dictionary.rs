@@ -171,7 +171,7 @@ pub fn initialize_dictionary() -> Result<(), std::io::Error> {
         println!("Read data from file: {}", data);
 
         // Try to parse as Value first to see the raw structure
-        let json_value: serde_json::Value = serde_json::from_str(&data).unwrap();
+        let json_value: serde_json::Value = serde_json::from_str(&data)?;
         println!("Raw JSON structure: {:#?}", json_value);
 
         // Try to parse with explicit type annotations
