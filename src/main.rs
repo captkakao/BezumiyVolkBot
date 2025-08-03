@@ -106,12 +106,11 @@ async fn main() {
                             return Ok(());
                         }
 
-                        let roast_chance = 1.0; // 100% chance to roast
+                        // let roast_chance = 1.0; // 100% chance to roast
                         // let roast_chance = 0.5; // 50% chance to roast
+                        let roast_chance = 0.2; // 20% chance to roast
                         // let roast_chance = 0.15; // 15% chance to roast
 
-                        println!("////////////// AM I HERE");
-                        
                         if rand::random::<f32>() < roast_chance {
                             let roast = if let Some(roaster) = &ai_roaster {
                                 match roaster.generate_roast(text, &username).await {

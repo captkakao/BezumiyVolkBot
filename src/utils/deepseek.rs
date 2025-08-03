@@ -22,8 +22,6 @@ impl DeepSeekRoaster {
     pub async fn generate_roast(&self, message: &str, username: &str) -> Result<String, Box<dyn std::error::Error>> {
         let prompt = self.create_roast_prompt(message, username);
 
-        println!("Prompt: {}", prompt);
-        
         let payload = json!({
             "model": "deepseek-chat",
             "messages": [
