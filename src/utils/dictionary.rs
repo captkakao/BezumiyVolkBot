@@ -83,6 +83,27 @@ impl DictionaryManager {
         user.replies.insert(trigger, reply);
     }
 
+    pub fn delete_user_entry(&mut self, chat_id: ChatId, username: Username, trigger: String) {
+        let chat = self.chats.entry(chat_id).or_insert_with(|| Chat {
+            message_counter: 0,
+            reply_frequency: default_reply_frequency(),
+            name: "New Chat".to_string(),
+            users: HashMap::new(),
+            common_replies: HashMap::new(),
+        });
+
+        if chat.reply_frequency == 0 {
+            chat.reply_frequency = default_reply_frequency()
+        }
+
+        let user = chat.users.entry(username).or_insert_with(|| User {
+            fullname: "New User".to_string(),
+            replies: HashMap::new(),
+        });
+
+        user.replies.remove(&trigger);
+    }
+
     pub fn add_common_entry(&mut self, chat_id: ChatId, trigger: String, reply: String) {
         let chat = self.chats.entry(chat_id).or_insert_with(|| Chat {
             message_counter: 0,
@@ -97,6 +118,18 @@ impl DictionaryManager {
         }
         
         chat.common_replies.insert(trigger, reply);
+    }
+
+    pub fn delete_common_entry(&mut self, chat_id: ChatId, trigger: String) {
+        let chat = self.chats.entry(chat_id).or_insert_with(|| Chat {
+            message_counter: 0,
+            reply_frequency: default_reply_frequency(),
+            name: "New Chat".to_string(),
+            users: HashMap::new(),
+            common_replies: HashMap::new(),
+        });
+
+        chat.common_replies.remove(&trigger);
     }
 
     pub fn update_reply_freq(&mut self, chat_id: ChatId, reply_frq: u32) {
@@ -187,6 +220,30 @@ pub fn add_common_trigger(chat_id: ChatId, trigger: String, reply: String) -> Re
 
     if let Some(manager) = lock.as_mut() {
         manager.add_common_entry(chat_id, trigger, reply);
+        manager.save()?;
+    }
+    Ok(())
+}
+
+pub fn delete_common_trigger(chat_id: ChatId, trigger: String) -> Result<(), std::io::Error> {
+    let mut lock = DICTIONARY.lock().map_err(|e| {
+        std::io::Error::new(std::io::ErrorKind::Other, e.to_string())
+    })?;
+
+    if let Some(manager) = lock.as_mut() {
+        manager.delete_common_entry(chat_id, trigger);
+        manager.save()?;
+    }
+    Ok(())
+}
+
+pub fn delete_user_trigger(chat_id: ChatId, username: Username, trigger: String) -> Result<(), std::io::Error> {
+    let mut lock = DICTIONARY.lock().map_err(|e| {
+        std::io::Error::new(std::io::ErrorKind::Other, e.to_string())
+    })?;
+
+    if let Some(manager) = lock.as_mut() {
+        manager.delete_user_entry(chat_id, username, trigger);
         manager.save()?;
     }
     Ok(())

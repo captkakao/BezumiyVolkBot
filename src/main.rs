@@ -8,7 +8,8 @@ use handlers::{
     help::*, 
     init_users::*, 
     add_trigger::*, 
-    get_dict::*, 
+    delete_trigger::*,
+    get_dict::*,
     change_reply_frequency::*
 };
 use dotenv::dotenv;
@@ -54,6 +55,7 @@ async fn main() {
                 },
                 Command::InitUsers => init_users(bot, msg).await,
                 Command::Add => add_trigger(bot, msg).await,
+                Command::Delete => delete_trigger(bot, msg).await,
                 Command::GetDict => get_dict(bot, msg).await,
                 Command::ChangeFrq => change_reply_frequency(bot, msg).await,
             }

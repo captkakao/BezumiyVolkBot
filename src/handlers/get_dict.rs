@@ -1,9 +1,14 @@
 use std::fs;
+use std::env;
 use teloxide::prelude::*;
 use teloxide::types::InputFile;
 
 pub async fn get_dict(bot: Bot, msg: Message) -> ResponseResult<()> {
-    let file_path = "/app/dictionaries.json";
+    let file_path = if env::var("APP_ENV").unwrap() == "test" {
+        "./dictionaries.json"
+    } else {
+        "/app/dictionaries.json"
+    };
 
     match fs::read_to_string(file_path) {
         Ok(content) => {
