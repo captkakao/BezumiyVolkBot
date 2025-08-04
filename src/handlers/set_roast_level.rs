@@ -15,6 +15,11 @@ pub async fn set_roast_level(bot: Bot, msg: Message) -> ResponseResult<()> {
             chat_roast_level = msg_text;
         }
         
+        if chat_roast_level < 1 || chat_roast_level > 5 {
+            bot.send_message(msg.chat.id, "Invalid roast level. Valid range: 1-5").await?;
+            return Ok(());
+        }
+        
         match update_roast_level(chat_id, chat_roast_level) {
             Ok(_) => {
                 bot.send_message(msg.chat.id, "Roast level updated").await?;
