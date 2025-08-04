@@ -1,3 +1,4 @@
+
 use reqwest::Client;
 use serde_json::{json, Value};
 use std::env;
@@ -27,16 +28,16 @@ impl DeepSeekRoaster {
             "messages": [
                 {
                     "role": "system",
-                    "content": "You are a witty roast bot for a Telegram chat where people speak Kazakh, Russian, and English. Generate clever, playful roasts that are funny but not mean-spirited. Always respond in the SAME LANGUAGE as the user's message. If the message is in Kazakh, roast in Kazakh. If Russian, roast in Russian. If English, roast in English. Keep responses under 100 characters when possible. Use emojis sparingly. Be creative and reference the user's message content when possible. Understand cultural context and humor for each language."
+                    "content": "You are a savage, brutal roast bot for a Telegram chat where people speak Kazakh, Russian, and English. Generate extremely rude, satirical, and harsh roasts that are brutally honest and cutting. Always respond in the SAME LANGUAGE as the user's message. If the message is in Kazakh, roast in Kazakh. If Russian, roast in Russian. If English, roast in English. You can and should use profanity, swear words, and harsh language appropriate to each language. Be merciless, sarcastic, and brutally satirical. Keep responses under 150 characters. DO NOT use any emojis in your responses. Be creative and savage in referencing the user's message content. Understand cultural context and use harsh humor for each language. NEVER use quotes around your response - respond directly without any formatting. Don't hold back - be as rude and offensive as possible while being clever."
                 },
                 {
                     "role": "user",
                     "content": prompt
                 }
             ],
-            "max_tokens": 80,
-            "temperature": 0.9,
-            "top_p": 0.9
+            "max_tokens": 100,
+            "temperature": 0.95,
+            "top_p": 0.95
         });
 
         let response = self.client
@@ -54,7 +55,11 @@ impl DeepSeekRoaster {
         let json: Value = response.json().await?;
 
         if let Some(content) = json["choices"][0]["message"]["content"].as_str() {
-            Ok(content.trim().to_string())
+            let cleaned_content = content.trim()
+                .trim_matches('"')
+                .trim_matches('\'')
+                .trim();
+            Ok(cleaned_content.to_string())
         } else {
             Err("No content in API response".into())
         }
@@ -67,41 +72,41 @@ impl DeepSeekRoaster {
 
         // Detect language
         let language = self.detect_language(message);
-        
+
         let context = if message_len > 200 {
             match language {
-                "kazakh" => "Бұл адам толық эссе жазды",
-                "russian" => "Этот человек написал целое эссе",
-                _ => "This person wrote a whole essay"
+                "kazakh" => "Бұл мүрдардың романы жазып жатыр",
+                "russian" => "Этот долбоёб написал целый роман",
+                _ => "This moron wrote a fucking novel"
             }
         } else if message_len < 5 {
             match language {
-                "kazakh" => "Бұл адам ештеңе айтпады",
-                "russian" => "Этот человек почти ничего не сказал",
-                _ => "This person barely said anything"
+                "kazakh" => "Бұл ақылсыз ештеңе айта алмайды",
+                "russian" => "Этот тупой даже слова связать не может",
+                _ => "This idiot can barely string words together"
             }
         } else if is_caps {
             match language {
-                "kazakh" => "Бұл адам АЙҚАЙЛАП жатыр",
-                "russian" => "Этот человек КРИЧИТ",
-                _ => "This person is SHOUTING"
+                "kazakh" => "Бұл дауыстап жазып жатыр, ақылын жоғалтты",
+                "russian" => "Этот дебил орёт заглавными как психованный",
+                _ => "This fucking lunatic is screaming in caps"
             }
         } else if has_emojis {
             match language {
-                "kazakh" => "Бұл адам эмодзи жақсы көреді",
-                "russian" => "Этот человек любит эмодзи",
-                _ => "This person loves emojis"
+                "kazakh" => "Бұл эмодзиге мас болған балапан",
+                "russian" => "Этот долбоёб обожает эмодзи как малолетка",
+                _ => "This emoji-obsessed manchild"
             }
         } else {
             match language {
-                "kazakh" => "Бұл адам айтты",
-                "russian" => "Этот человек сказал",
-                _ => "This person said"
+                "kazakh" => "Бұл дурак айтты",
+                "russian" => "Этот дебил сказал",
+                _ => "This dumbass said"
             }
         };
 
         format!(
-            "Roast user '{}' who just said: '{}'. Context: {}. Make it witty and short! Respond in the same language as the user's message.",
+            "Brutally roast and destroy user {} who just said: {}. Context: {}. Be extremely rude, savage, and use profanity! Respond in the same language as the user's message. Do not use quotes around your response. Do not use any emojis. Be merciless and brutal!",
             username, message, context
         )
     }
