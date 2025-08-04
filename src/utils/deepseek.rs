@@ -135,8 +135,8 @@ impl DeepSeekRoaster {
                     _ => "This person wrote a damn essay"
                 },
                 4 => match language {
-                    "kazakh" => "Бұл мүрдардың романы жазып жатыр",
-                    "russian" => "Этот болтун написал целый роман",
+                    "kazakh" => "Бұл диқан романы жазып жатыр",
+                    "russian" => "Этот мандрагора написал целый роман",
                     _ => "This chatterbox wrote a fucking novel"
                 },
                 5 => match language {
@@ -164,9 +164,9 @@ impl DeepSeekRoaster {
                     _ => "This genius can barely form a sentence"
                 },
                 4 => match language {
-                    "kazakh" => "Бұл қотақбас сөйлей алмайды",
-                    "russian" => "Этот еблан даже слова связать не может",
-                    _ => "This asshole can't even string words together"
+                    "kazakh" => "Бұл диқан сөйлей алмайды",
+                    "russian" => "Этот мандрагора даже слова связать не может",
+                    _ => "This pokemon can't even string words together"
                 },
                 5 => match language {
                     "kazakh" => "Бұл қотақбас ештеңе айта алмайды",
@@ -193,8 +193,8 @@ impl DeepSeekRoaster {
                     _ => "This person is yelling like a maniac"
                 },
                 4 => match language {
-                    "kazakh" => "Бұл ессіз қотақбас дауыстап жазып жатыр",
-                    "russian" => "Этот еблан орёт заглавными как ненормальный",
+                    "kazakh" => "Бұл ессіз диқан дауыстап жазып жатыр",
+                    "russian" => "Этот мандрагора орёт заглавными как ненормальный",
                     _ => "This asshole is screaming in caps like crazy"
                 },
                 5 => match language {
@@ -222,9 +222,9 @@ impl DeepSeekRoaster {
                     _ => "This character said"
                 },
                 4 => match language {
-                    "kazakh" => "Бұл қотақ айтты",
-                    "russian" => "Этот хуй заявил",
-                    _ => "This dick declared"
+                    "kazakh" => "Бұл диқан айтты",
+                    "russian" => "Этот мандрагора заявил",
+                    _ => "This pussy declared"
                 },
                 5 => match language {
                     "kazakh" => "Бұл қотақбас айтты",
