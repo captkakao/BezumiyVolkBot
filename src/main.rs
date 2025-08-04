@@ -123,7 +123,7 @@ async fn main() {
                             3u8
                         };
                         
-                        if rand::random::<f32>() < roast_chance && text.len() > 7 {
+                        if rand::random::<f32>() < roast_chance && text.len() > 50 {
                             let roast = if let Some(roaster) = &ai_roaster {
                                 match roaster.generate_roast(text, &username, chat_roast_level).await {
                                     Ok(ai_roast) => {
