@@ -140,9 +140,9 @@ impl DeepSeekRoaster {
                     _ => "This chatterbox wrote a fucking novel"
                 },
                 5 => match language {
-                    "kazakh" => "Бұл ақымақ романды жазып жатыр",
-                    "russian" => "Этот долбоёб написал целый роман",
-                    _ => "This moron wrote a fucking novel"
+                    "kazakh" => "Бұл қотақбас романды жазып жатыр",
+                    "russian" => "Этот пидорас написал целый роман",
+                    _ => "This asshole wrote a fucking novel"
                 },
                 _ => unreachable!()
             }
@@ -164,14 +164,14 @@ impl DeepSeekRoaster {
                     _ => "This genius can barely form a sentence"
                 },
                 4 => match language {
-                    "kazakh" => "Бұл ақылсыз сөйлей алмайды",
-                    "russian" => "Этот тупой даже слова связать не может",
-                    _ => "This dummy can't even string words together"
+                    "kazakh" => "Бұл қотақбас сөйлей алмайды",
+                    "russian" => "Этот еблан даже слова связать не может",
+                    _ => "This asshole can't even string words together"
                 },
                 5 => match language {
-                    "kazakh" => "Бұл ақылсыз ештеңе айта алмайды",
-                    "russian" => "Этот тупой даже слова связать не может",
-                    _ => "This idiot can barely string words together"
+                    "kazakh" => "Бұл қотақбас ештеңе айта алмайды",
+                    "russian" => "Этот еблан даже слова связать не может",
+                    _ => "This asshole can barely string words together"
                 },
                 _ => unreachable!()
             }
@@ -193,43 +193,14 @@ impl DeepSeekRoaster {
                     _ => "This person is yelling like a maniac"
                 },
                 4 => match language {
-                    "kazakh" => "Бұл дауыстап жазып жатыр, ақылын жоғалтты",
-                    "russian" => "Этот псих орёт заглавными как ненормальный",
-                    _ => "This psycho is screaming in caps like crazy"
+                    "kazakh" => "Бұл ессіз қотақбас дауыстап жазып жатыр",
+                    "russian" => "Этот еблан орёт заглавными как ненормальный",
+                    _ => "This asshole is screaming in caps like crazy"
                 },
                 5 => match language {
-                    "kazakh" => "Бұл дауыстап жазып жатыр, ақылын жоғалтты",
-                    "russian" => "Этот дебил орёт заглавными как психованный",
-                    _ => "This fucking lunatic is screaming in caps"
-                },
-                _ => unreachable!()
-            }
-        } else if has_emojis {
-            match level {
-                1 => match language {
-                    "kazakh" => "Бұл адам эмодзи жақсы көреді",
-                    "russian" => "Этот человек любит эмодзи",
-                    _ => "This person likes emojis"
-                },
-                2 => match language {
-                    "kazakh" => "Бұл эмодзиге ғашық адам",
-                    "russian" => "Этот любитель эмодзи",
-                    _ => "This emoji lover"
-                },
-                3 => match language {
-                    "kazakh" => "Бұл эмодзиге ғашық адам",
-                    "russian" => "Этот любитель эмодзи",
-                    _ => "This emoji enthusiast"
-                },
-                4 => match language {
-                    "kazakh" => "Бұл эмодзиге мас болған адам",
-                    "russian" => "Этот помешанный на эмодзи",
-                    _ => "This emoji-obsessed person"
-                },
-                5 => match language {
-                    "kazakh" => "Бұл эмодзиге мас болған балапан",
-                    "russian" => "Этот долбоёб обожает эмодзи как малолетка",
-                    _ => "This emoji-obsessed manchild"
+                    "kazakh" => "Бұл қотақбас дауыстап жазып жатыр",
+                    "russian" => "Этот еблан орёт заглавными как психованный",
+                    _ => "This fucking asshole is screaming in caps"
                 },
                 _ => unreachable!()
             }
@@ -251,14 +222,14 @@ impl DeepSeekRoaster {
                     _ => "This character said"
                 },
                 4 => match language {
-                    "kazakh" => "Бұл жігіт айтты",
-                    "russian" => "Этот товарищ заявил",
-                    _ => "This guy declared"
+                    "kazakh" => "Бұл қотақ айтты",
+                    "russian" => "Этот хуй заявил",
+                    _ => "This dick declared"
                 },
                 5 => match language {
-                    "kazakh" => "Бұл дурак айтты",
-                    "russian" => "Этот дебил сказал",
-                    _ => "This dumbass said"
+                    "kazakh" => "Бұл қотақбас айтты",
+                    "russian" => "Этот еблан сказал",
+                    _ => "This asshole said"
                 },
                 _ => unreachable!()
             }

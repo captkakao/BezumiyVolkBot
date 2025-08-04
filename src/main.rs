@@ -11,7 +11,8 @@ use handlers::{
     delete_trigger::*,
     get_dict::*,
     set_dict::*,
-    change_reply_frequency::*
+    change_reply_frequency::*,
+    set_roast_level::*
 };
 use dotenv::dotenv;
 use teloxide::sugar::request::RequestReplyExt;
@@ -71,6 +72,7 @@ async fn main() {
                 Command::GetDict => get_dict(bot, msg).await,
                 Command::SetDict => set_dict(bot, msg).await,
                 Command::ChangeFrq => change_reply_frequency(bot, msg).await,
+                Command::SetRoastLvl => set_roast_level(bot, msg).await,
             }
         });
 

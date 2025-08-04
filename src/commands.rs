@@ -20,6 +20,8 @@ pub enum Command {
     Delete,
     #[command(description = "change trigger reply frequency: /changefrq 4")]
     ChangeFrq,
+    #[command(description = "set roast level [1-5]: /setroastlvl 4")]
+    SetRoastLvl,
     #[command(description = "get dictionary entries: /getdict", hide)]
     GetDict,
     #[command(description = "set dictionary entries: /setdict", hide)]
