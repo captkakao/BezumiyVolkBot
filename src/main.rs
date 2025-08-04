@@ -108,10 +108,10 @@ async fn main() {
                             return Ok(());
                         }
 
-                        let roast_chance = 1.0; // 100% chance to roast
+                        // let roast_chance = 1.0; // 100% chance to roast
                         // let roast_chance = 0.5; // 50% chance to roast
                         // let roast_chance = 0.2; // 20% chance to roast
-                        // let roast_chance = 0.15; // 15% chance to roast
+                        let roast_chance = 0.15; // 15% chance to roast
                         // let roast_chance = 0.1; // 10% chance to roast
                         let chat_roast_level = if let Ok(lock) = DICTIONARY.lock() {
                             if let Some(manager) = lock.as_ref() {
