@@ -106,16 +106,25 @@ async fn main() {
                             return Ok(());
                         }
 
-                        // let roast_chance = 1.0; // 100% chance to roast
+                        let roast_chance = 1.0; // 100% chance to roast
                         // let roast_chance = 0.5; // 50% chance to roast
                         // let roast_chance = 0.2; // 20% chance to roast
-                        let roast_chance = 0.15; // 15% chance to roast
-
-                        if rand::random::<f32>() < roast_chance {
+                        // let roast_chance = 0.15; // 15% chance to roast
+                        // let roast_chance = 0.1; // 10% chance to roast
+                        let chat_roast_level = if let Ok(lock) = DICTIONARY.lock() {
+                            if let Some(manager) = lock.as_ref() {
+                                manager.get_roast_level(chat_id.clone())
+                            } else {
+                                3u8
+                            }
+                        } else {
+                            3u8
+                        };
+                        
+                        if rand::random::<f32>() < roast_chance && text.len() > 7 {
                             let roast = if let Some(roaster) = &ai_roaster {
-                                match roaster.generate_roast(text, &username).await {
+                                match roaster.generate_roast(text, &username, chat_roast_level).await {
                                     Ok(ai_roast) => {
-                                        log::info!("Generated AI roast for {}: {}", username, ai_roast);
                                         Some(ai_roast)
                                     }
                                     Err(e) => {

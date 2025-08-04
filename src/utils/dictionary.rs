@@ -11,6 +11,9 @@ type Reply = String;
 
 pub(crate) fn default_reply_frequency() -> u32 { 3 }
 
+// roast level 1-5
+pub(crate) fn default_roast_level() -> u8 { 3 }
+
 #[derive(Debug, Serialize, Deserialize, Clone, Default)]
 pub struct User {
     pub fullname: String,
@@ -23,7 +26,10 @@ pub struct Chat {
     
     #[serde(default = "default_reply_frequency")]
     pub reply_frequency: u32,
-    
+
+    #[serde(default = "default_roast_level")]
+    pub roast_level: u8,
+
     pub name: String,
     pub users: HashMap<Username, User>,
     pub common_replies: HashMap<Trigger, Reply>,
@@ -45,6 +51,7 @@ impl DictionaryManager {
             message_counter: 0,
             reply_frequency: default_reply_frequency(),
             common_replies: HashMap::new(),
+            roast_level: default_roast_level(),
         });
 
         if chat.reply_frequency == 0 {
@@ -66,6 +73,7 @@ impl DictionaryManager {
         let chat = self.chats.entry(chat_id).or_insert_with(|| Chat {
             message_counter: 0,
             reply_frequency: default_reply_frequency(),
+            roast_level: default_roast_level(),
             name: "New Chat".to_string(),
             users: HashMap::new(),
             common_replies: HashMap::new(),
@@ -87,6 +95,7 @@ impl DictionaryManager {
         let chat = self.chats.entry(chat_id).or_insert_with(|| Chat {
             message_counter: 0,
             reply_frequency: default_reply_frequency(),
+            roast_level: default_roast_level(),
             name: "New Chat".to_string(),
             users: HashMap::new(),
             common_replies: HashMap::new(),
@@ -108,6 +117,7 @@ impl DictionaryManager {
         let chat = self.chats.entry(chat_id).or_insert_with(|| Chat {
             message_counter: 0,
             reply_frequency: default_reply_frequency(),
+            roast_level: default_roast_level(),
             name: "New Chat".to_string(),
             users: HashMap::new(),
             common_replies: HashMap::new(),
@@ -124,6 +134,7 @@ impl DictionaryManager {
         let chat = self.chats.entry(chat_id).or_insert_with(|| Chat {
             message_counter: 0,
             reply_frequency: default_reply_frequency(),
+            roast_level: default_roast_level(),
             name: "New Chat".to_string(),
             users: HashMap::new(),
             common_replies: HashMap::new(),
@@ -136,6 +147,7 @@ impl DictionaryManager {
         let chat = self.chats.entry(chat_id).or_insert_with(|| Chat {
             message_counter: 0,
             reply_frequency: default_reply_frequency(),
+            roast_level: default_roast_level(),
             name: "New Chat".to_string(),
             users: HashMap::new(),
             common_replies: HashMap::new(),
@@ -162,6 +174,12 @@ impl DictionaryManager {
                 .find(|(k, _)| lowercase_input.contains(&k.to_lowercase()))
                 .map(|(_, v)| v)
         }
+    }
+
+    pub fn get_roast_level(&self, chat_id: ChatId) -> u8 {
+        let chat = self.chats.get(&chat_id);
+        
+        chat.unwrap().roast_level
     }
 }
 
